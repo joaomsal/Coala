@@ -26,6 +26,7 @@ public class Tmenu extends javax.swing.JFrame {
         pane = new javax.swing.JDesktopPane();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        del = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,8 +49,16 @@ public class Tmenu extends javax.swing.JFrame {
             }
         });
 
+        del.setText("Excluir");
+        del.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delActionPerformed(evt);
+            }
+        });
+
         pane.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         pane.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        pane.setLayer(del, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout paneLayout = new javax.swing.GroupLayout(pane);
         pane.setLayout(paneLayout);
@@ -58,8 +67,10 @@ public class Tmenu extends javax.swing.JFrame {
             .addGroup(paneLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(paneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                    .addComponent(del, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addGroup(paneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)))
                 .addGap(716, 716, 716))
         );
         paneLayout.setVerticalGroup(
@@ -69,6 +80,8 @@ public class Tmenu extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(del, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -104,6 +117,13 @@ public class Tmenu extends javax.swing.JFrame {
         pane.add(tela);
         tela.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delActionPerformed
+        // TODO add your handling code here:
+        TelaDelete tel = new TelaDelete();
+        pane.add(tel);
+        tel.setVisible(true);
+    }//GEN-LAST:event_delActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,6 +161,7 @@ public class Tmenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton del;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
