@@ -90,6 +90,29 @@ public class AlunoDao {
         }
         return user;
     }
+     public List<Aluno> findEspecifico(Aluno a) {// array do tipo aluno
+        String sql = "SELECT *FROM aluno WHERE nome LIKE ?";//selecionando todos os componentes da tabela com o nome = a 
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Aluno> user = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement(sql);
+             stmt.setNString(1, "%"+ a.getNome() +"%");
+            rs = stmt.executeQuery();// executando o select from 
+
+            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
+                Aluno us = new Aluno();
+                us.setNome(rs.getString("nome"));
+                user.add(us);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERRO FIND Allgum");
+        } finally {
+            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
+        }
+        return user;
+    }
 
     public boolean update(Aluno user) {
         

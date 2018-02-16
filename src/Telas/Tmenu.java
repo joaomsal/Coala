@@ -72,7 +72,7 @@ public class Tmenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(pane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 920, 540));
+        jPanel1.add(pane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, -1, 540));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

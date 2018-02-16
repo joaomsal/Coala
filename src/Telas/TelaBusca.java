@@ -54,7 +54,7 @@ public class TelaBusca extends javax.swing.JInternalFrame {
 
         jScrollPane1.setViewportView(tpane);
 
-        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Busca por nome", "Busca total" }));
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Busca por nome (EXATAMENTE IGUAL)", "Busca total", "Busca por nome  (CONTÉM)" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,9 +102,9 @@ public class TelaBusca extends javax.swing.JInternalFrame {
         AlunoDao aluno = new AlunoDao();
         Aluno a = new Aluno();
         a.setNome(busc.getText());
-        String sel = combo.getSelectedItem().toString();//recebe a string da opção inserida pelo usuario
+       int sel = combo.getSelectedIndex();//recebe a string da opção inserida pelo usuario
         switch (sel){
-            case "Busca por nome"://foi feita a gabiarra pq estava sem pegar com a variavel 
+            case 0://foi feita a gabiarra pq estava sem pegar com a variavel 
          String s ="";
         List <Aluno> aluno1 = aluno.findAlgum(a);
         for (int i =0; i< aluno1.size();i++){
@@ -112,7 +112,7 @@ public class TelaBusca extends javax.swing.JInternalFrame {
         }
        tpane.setText(s); 
                 break;
-            case "Busca total"://ganbiarra
+            case 1://ganbiarra
     
         List <Aluno> aluno2 = aluno.findAll();
         String s1 ="";
@@ -122,7 +122,13 @@ public class TelaBusca extends javax.swing.JInternalFrame {
         }
        tpane.setText(s1); 
                 break;
-            case "3":
+            case 2:
+                List<Aluno> al3 = aluno.findEspecifico(a);
+                String s3 ="";
+            for (int i =0; i< al3.size();i++){
+              s3+=al3.get(i).getNome()+"\n";}
+            tpane.setText(s3);
+           
                 break;
         
     }
