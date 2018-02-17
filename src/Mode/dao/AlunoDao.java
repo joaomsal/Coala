@@ -2,6 +2,7 @@ package Mode.dao;
 
 import Model.bean.Aluno;
 import Model.bean.Escola;
+import Model.bean.Turma;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author RG 295
- */
+
 public class AlunoDao {
 
     private Connection con = null;//contrutor do conector
@@ -21,8 +19,8 @@ public class AlunoDao {
         con = Conection.ConectionFactory.getConection();//invocando o conector do DB
     }
 
-    public boolean save(Aluno user, Escola esc) {//Classe que insere e salva os dados
-        String sql = "INSERT INTO aluno (`nome`,escola_nome) VALUES (?,?);";
+    public boolean save(Aluno user, Escola esc, Turma turm) {//Classe que insere e salva os dados
+        String sql = "INSERT INTO aluno (`nome`,turma_idturma) VALUES (?,?);";
         
         PreparedStatement stmt = null;
         try {
@@ -45,7 +43,7 @@ public class AlunoDao {
     }
 
     public List<Aluno> findAll() {// array do tipo aluno
-        String sql = "SELECT *FROM aluno";//selecionando todos os componentes da tabela
+        String sql = "SELECT *FROM aluno a join escola e ";//selecionando todos os componentes da tabela
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Aluno> user = new ArrayList();
@@ -56,7 +54,8 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
-                us.setNome(rs.getString("nome"));
+                us.setNome(rs.getString("a.nome"));
+                us.turma.escola.setNome(rs.getNString("escola_nome"));
                 user.add(us);
             }
         } catch (SQLException ex) {
@@ -81,6 +80,7 @@ public class AlunoDao {
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
                 us.setNome(rs.getString("nome"));
+                 us.turma.escola.setNome(rs.getNString("escola_nome"));
                 user.add(us);
             }
         } catch (SQLException ex) {
@@ -104,6 +104,7 @@ public class AlunoDao {
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
                 us.setNome(rs.getString("nome"));
+                 us.turma.escola.setNome(rs.getNString("escola_nome"));
                 user.add(us);
             }
         } catch (SQLException ex) {

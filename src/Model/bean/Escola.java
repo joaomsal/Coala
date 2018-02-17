@@ -7,6 +7,7 @@ package Model.bean;
  */
 public class Escola {
     String nome;
+    double media;
 
     public String getNome() {
         return nome;
@@ -16,14 +17,14 @@ public class Escola {
         this.nome = nome;
     }
 
-    public Double getMedia() {
+    public double getMedia() {
         return media;
     }
 
-    public void setMedia(Double media) {
+    public void setMedia(double media) {
         this.media = media;
     }
-    Double media;
+    
     
     
 }

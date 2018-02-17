@@ -2,6 +2,7 @@
 package Mode.dao;
 
 import Model.bean.Escola;
+import Model.bean.Turma;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,27 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author RG 295
- */
-public class EscolaDao {
-   
- private Connection con= null;
+
+public class TurmaDAO {
+    private Connection con= null;
  
- public EscolaDao (){
+ public TurmaDAO (){
      con = Conection.ConectionFactory.getConection();
 }
  
- public boolean save (Escola user){
+ public boolean save (Turma user,Escola esc){   //ok 
    
-     String sql = "INSERT INTO escola (nome,media) VALUES (?,?)";
+     String sql = "INSERT INTO turma (nome,escola_idescola) VALUES (?,?)";
       PreparedStatement stmt = null;
      try {
          stmt= con.prepareStatement(sql);
          stmt.setNString(1, user.getNome());
-         stmt.setDouble(2, user.getMedia());
-         stmt.executeUpdate();
+         stmt.setNString(2, esc.getNome());
+                    stmt.executeUpdate();
                     
 
         return true;
@@ -41,19 +38,20 @@ public class EscolaDao {
      }
      
  }
-    public List <Escola> findAll(){
-        String sql = "SELECT *FROM escola";
+    public List <Turma> findAll(){  // ok
+        String sql = "SELECT *FROM turma";
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<Escola> user = new ArrayList();
+        List<Turma> user = new ArrayList();
         
      try {
          stmt= con.prepareStatement(sql);
          rs =stmt.executeQuery();
          
          while(rs.next()){
-             Escola us = new Escola ();
+             Turma us = new Turma ();
              us.setNome(rs.getString("nome"));
+             us.escola.setNome(rs.getString("escola_idescola"));
              user.add(us);
          }
      } catch (SQLException ex) {
@@ -64,8 +62,8 @@ public class EscolaDao {
      return user;   
     } 
  
-    public boolean update (Escola user, int id){
-     String sql3 = "UPDATE escola SET nome = ? WHERE id = ?";
+    public boolean update (Turma user, int id){  //ok
+     String sql3 = "UPDATE Turma SET nome = ? WHERE id = ?";
       PreparedStatement stmt = null;
      try {
          stmt= con.prepareStatement(sql3);
@@ -81,7 +79,7 @@ public class EscolaDao {
      }
      
  }
-    public boolean delete (int id){
+    public boolean delete (int id){ // ok
      String sql3 = "DELETE FROM escola WHERE id = ?";
       PreparedStatement stmt = null;
      try {
@@ -97,5 +95,4 @@ public class EscolaDao {
      }
      
  }
-    
 }
