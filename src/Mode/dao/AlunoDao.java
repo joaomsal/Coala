@@ -54,6 +54,7 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
+                us.setId(rs.getInt("idAluno"));
                 us.setNome(rs.getString("nome"));
                 us.turma.setNome(rs.getNString("turma_nome"));
                 us.turma.escola.setNome(rs.getNString("turma_escola_nome"));
@@ -80,6 +81,7 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
+                us.setId(rs.getInt("idAluno"));
                 us.setNome(rs.getString("nome"));
                  us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
                 us.turma.setNome(rs.getNString("turma_nome"));
@@ -105,6 +107,7 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
+                us.setId(rs.getInt("idAluno"));
                 us.setNome(rs.getString("nome"));
                  us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
                 us.turma.setNome(rs.getNString("turma_nome"));
@@ -130,6 +133,7 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
+                us.setId(rs.getInt("idAluno"));
                 us.setNome(rs.getString("nome"));
                  us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
                 us.turma.setNome(rs.getNString("turma_nome"));
@@ -185,16 +189,16 @@ public class AlunoDao {
 
     }
 
-    public boolean delete(Aluno user) {
-        String sql3 = "DELETE FROM aluno WHERE nome = ?"; // deleta aluno onde o nome é igual ao inserido
+    public boolean delete(int id) {
+        String sql3 = "DELETE FROM aluno WHERE idAluno = ?"; // deleta aluno onde o nome é igual ao inserido
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql3);
-            stmt.setString(1, user.getNome()); // id
+            stmt.setInt(1, id); // id
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {
-            System.out.println("Erro, dont save!" + ex);
+            System.out.println("NÃO EXCLUIU" + ex);
             return false;
         } finally {
             Conection.ConectionFactory.CloseConnection(con, stmt);

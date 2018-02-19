@@ -22,6 +22,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 dfm.setNumRows(0);
             for(Aluno a: alu){
                 dfm.addRow(new Object[]{
+                        a.getId(),
                         a.getNome(),
                         a.turma.getNome(),
                         a.turma.escola.getNome()});}       
@@ -68,6 +69,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tipobusca = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         alunos = new javax.swing.JTable();
+        del = new javax.swing.JButton();
+        tdel = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROJETO COALA");
@@ -259,15 +263,37 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         tipobusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NOME", "TURMA", "ESCOLA" }));
 
+        alunos.setBackground(new java.awt.Color(204, 204, 204));
+        alunos.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         alunos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NOME", "TURMA", "ESCOLA"
+                "ID", "NOME", "TURMA", "ESCOLA"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        alunos.setColumnSelectionAllowed(true);
+        alunos.setGridColor(new java.awt.Color(0, 102, 102));
         jScrollPane1.setViewportView(alunos);
+        alunos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        del.setText("DELETAR");
+        del.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("ID DO ALUNO:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -275,15 +301,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(busca, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(tipobusca, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tdel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(bsc)))
-                .addContainerGap())
+                        .addComponent(del))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(busca, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(tipobusca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(bsc))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,8 +327,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(bsc)
                     .addComponent(tipobusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(del)
+                    .addComponent(tdel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(14, 14, 14))
         );
 
         jTabbedPane1.addTab("BUSCAR", jPanel4);
@@ -416,6 +454,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bscActionPerformed
 
+    private void delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delActionPerformed
+        // TODO add your handling code here:
+        AlunoDao aluno = new AlunoDao();
+             if(aluno.delete(Integer.parseInt(tdel.getText()))){
+                 JOptionPane.showMessageDialog(this, "ALUNO EXCLUÌDO COM SUCESSO");
+             }else
+                 JOptionPane.showMessageDialog(this, "FALHA NA EXCLUSÃO");
+        
+    }//GEN-LAST:event_delActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -462,6 +510,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton bsc;
     private javax.swing.JTextField busca;
     private javax.swing.JButton cad;
+    private javax.swing.JButton del;
     private javax.swing.JButton env;
     private static javax.swing.JComboBox<Object> esc;
     private javax.swing.JLabel jLabel1;
@@ -471,6 +520,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -480,6 +530,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField mEsc;
     private javax.swing.JTextField nEsc;
     private javax.swing.JTextField nturma;
+    private javax.swing.JTextField tdel;
     private javax.swing.JComboBox<String> tipobusca;
     // End of variables declaration//GEN-END:variables
 }
