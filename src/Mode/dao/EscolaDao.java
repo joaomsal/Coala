@@ -1,6 +1,7 @@
 
 package Mode.dao;
 
+import Model.bean.Aluno;
 import Model.bean.Escola;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,6 +65,35 @@ public class EscolaDao {
      return user;   
     } 
  
+    
+     public List<Escola> findAlgum(String a) {// array do tipo aluno
+        String sql = "SELECT *FROM escola WHERE nome LIKE ?";//selecionando todos os componentes da tabela
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Escola> user = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement(sql);
+             stmt.setNString(1, "%"+a+"%");
+            rs = stmt.executeQuery();// executando o select from 
+
+            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
+                Escola us = new Escola();
+                us.setNome(rs.getString("nome"));
+                 us.setMedia(Double.parseDouble(rs.getNString("media")));
+                user.add(us);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERRO FIND Allgum");
+        } finally {
+            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
+        }
+        return user;
+    }
+    
+    
+    
+    
     public boolean update (Escola user, int id){
      String sql3 = "UPDATE escola SET nome = ? WHERE id = ?";
       PreparedStatement stmt = null;

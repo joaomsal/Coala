@@ -19,15 +19,15 @@ public class AlunoDao {
         con = Conection.ConectionFactory.getConection();//invocando o conector do DB
     }
 
-    public boolean save(Aluno user, Escola esc, Turma turm) {//Classe que insere e salva os dados
-        String sql = "INSERT INTO aluno (`nome`,turma_idturma) VALUES (?,?);";
+    public boolean save(Aluno user, String esc, String turm) {//Classe que insere e salva os dados
+        String sql = "INSERT INTO aluno (nome,turma_nome, turma_Escola_nome) VALUES (?,?,?);";
         
         PreparedStatement stmt = null;
         try {
            stmt = con.prepareStatement(sql);// preparando o DB para inserção
            stmt.setNString(1, user.getNome());//inserindo o objeto aluno
-           stmt.setNString(2,esc.getNome() );//inserindo o objeto escola
-         
+           stmt.setNString(2,esc);
+           stmt.setNString(3,turm);
 
             stmt.executeUpdate();// update
             return true;
@@ -43,7 +43,7 @@ public class AlunoDao {
     }
 
     public List<Aluno> findAll() {// array do tipo aluno
-        String sql = "SELECT *FROM aluno a join escola e ";//selecionando todos os componentes da tabela
+        String sql = "SELECT *FROM aluno";//selecionando todos os componentes da tabela
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Aluno> user = new ArrayList();
@@ -54,8 +54,9 @@ public class AlunoDao {
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
-                us.setNome(rs.getString("a.nome"));
-                us.turma.escola.setNome(rs.getNString("escola_nome"));
+                us.setNome(rs.getString("nome"));
+                us.turma.setNome(rs.getNString("turma_nome"));
+                us.turma.escola.setNome(rs.getNString("turma_escola_nome"));
                 user.add(us);
             }
         } catch (SQLException ex) {
@@ -66,22 +67,73 @@ public class AlunoDao {
         return user;
     }
     
-     public List<Aluno> findAlgum(Aluno a) {// array do tipo aluno
-        String sql = "SELECT *FROM aluno WHERE nome = ?";//selecionando todos os componentes da tabela
+     public List<Aluno> buscaporNome(String a) {// array do tipo aluno
+        String sql = "SELECT *FROM aluno WHERE nome LIKE ?";//selecionando todos os componentes da tabela
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Aluno> user = new ArrayList();
 
         try {
             stmt = con.prepareStatement(sql);
-             stmt.setNString(1, a.getNome());
+             stmt.setNString(1, "%"+a+"%");
             rs = stmt.executeQuery();// executando o select from 
 
             while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
                 Aluno us = new Aluno();
                 us.setNome(rs.getString("nome"));
-                 us.turma.escola.setNome(rs.getNString("escola_nome"));
-                user.add(us);
+                 us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
+                us.turma.setNome(rs.getNString("turma_nome"));
+                 user.add(us);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERRO FIND Allgum");
+        } finally {
+            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
+        }
+        return user;
+    }
+     public List<Aluno> buscaporTurma(String a) {// array do tipo aluno
+        String sql = "SELECT *FROM aluno WHERE turma_nome LIKE ?";//selecionando todos os componentes da tabela
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Aluno> user = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement(sql);
+             stmt.setNString(1, "%"+a+"%");
+            rs = stmt.executeQuery();// executando o select from 
+
+            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
+                Aluno us = new Aluno();
+                us.setNome(rs.getString("nome"));
+                 us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
+                us.turma.setNome(rs.getNString("turma_nome"));
+                 user.add(us);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ERRO FIND Allgum");
+        } finally {
+            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
+        }
+        return user;
+    }
+     public List<Aluno> buscaporEscola(String a) {// array do tipo aluno
+        String sql = "SELECT *FROM aluno WHERE turma_Escola_nome LIKE ?";//selecionando todos os componentes da tabela
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Aluno> user = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement(sql);
+             stmt.setNString(1, "%"+a+"%");
+            rs = stmt.executeQuery();// executando o select from 
+
+            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
+                Aluno us = new Aluno();
+                us.setNome(rs.getString("nome"));
+                 us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
+                us.turma.setNome(rs.getNString("turma_nome"));
+                 user.add(us);
             }
         } catch (SQLException ex) {
             System.out.println("ERRO FIND Allgum");
