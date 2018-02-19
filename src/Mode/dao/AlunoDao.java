@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,31 +44,6 @@ public class AlunoDao {
 
     }
 
-    public List<Aluno> findAll() {// array do tipo aluno
-        String sql = "SELECT *FROM aluno";//selecionando todos os componentes da tabela
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Aluno> user = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement(sql);
-            rs = stmt.executeQuery();// executando o select from 
-
-            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
-                Aluno us = new Aluno();
-                us.setId(rs.getInt("idAluno"));
-                us.setNome(rs.getString("nome"));
-                us.turma.setNome(rs.getNString("turma_nome"));
-                us.turma.escola.setNome(rs.getNString("turma_escola_nome"));
-                user.add(us);
-            }
-        } catch (SQLException ex) {
-            System.out.println("ERRO, não encontrado");
-        } finally {
-            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
-        }
-        return user;
-    }
 
     public List<Aluno> buscaporNome(String a) {// array do tipo aluno
         String sql = "SELECT *FROM aluno WHERE nome LIKE ?";//selecionando todos os componentes da tabela
@@ -150,23 +126,27 @@ public class AlunoDao {
         return user;
     }
 
-    public boolean update(Aluno user) {
-
-        String sql3 = "UPDATE aluno SET nome = ? WHERE nome = ?";// atualiza o aluno onde o nome é igual ao inserido
+        public boolean alterar(String nome, String escola, String turma, int id) {//Classe que insere e salva os dados
+        
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql3);
-            stmt.setNString(1, user.getNome());
-            stmt.executeUpdate();
+            stmt = con.prepareStatement("UPDATE aluno SET nome = ? , turma_nome = ? , turma_Escola_nome = ? WHERE idAluno = ?");// preparando o DB para inserção
+            stmt.setNString(1, nome);//inserindo o objeto aluno
+            stmt.setNString(2, turma);
+            stmt.setNString(3, escola);
+            stmt.setInt(4,id);
+
+            stmt.executeUpdate();// update
             return true;
         } catch (SQLException ex) {
-            System.out.println("Erro, não atualizado" + ex);
+            System.out.println("Erro, Não Alterado!" + ex);
             return false;
         } finally {
             Conection.ConectionFactory.CloseConnection(con, stmt);
         }
 
     }
+
 
     public boolean delete(int id) {
         String sql3 = "DELETE FROM aluno WHERE idAluno = ?"; // deleta aluno onde o nome é igual ao inserido
