@@ -7,6 +7,15 @@ package Model.bean;
  */
 public class Aluno {
     private String nome;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
    public Turma turma= new Turma();
     
     public String getNome() {
