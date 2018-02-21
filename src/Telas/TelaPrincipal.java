@@ -17,9 +17,12 @@ import javax.swing.table.DefaultTableModel;
  * @author RG 295
  */
 public class TelaPrincipal extends javax.swing.JFrame {
-
+/**@pram 
+ * @
+ */
+    
     public void mostrar(List<Aluno> alu) { // joga dados da lista na tabela
-        DefaultTableModel dfm = (DefaultTableModel) alunos.getModel();
+        DefaultTableModel dfm = (DefaultTableModel) alunos.getModel(); 
         dfm.setNumRows(0);
         for (Aluno a : alu) {
             dfm.addRow(new Object[]{
@@ -30,6 +33,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    
+    
     public TelaPrincipal() {
         initComponents();
 

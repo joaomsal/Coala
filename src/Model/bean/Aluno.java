@@ -8,6 +8,23 @@ package Model.bean;
 public class Aluno {
     private String nome;
     private int id;
+    private String notas;
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
 
     public int getId() {
         return id;
