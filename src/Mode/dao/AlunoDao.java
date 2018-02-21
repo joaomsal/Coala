@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,34 +146,6 @@ public class AlunoDao {
         }
 
     }
-        
-     public List<Aluno> pegaNotas( ) {// array do tipo aluno
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List<Aluno> user = new ArrayList();
-
-        try {
-            stmt = con.prepareStatement("SELECT nome,turma_nome,turma_escola_nome, GROUP_CONCAT(DISTINCT nota ORDER BY und ASC SEPARATOR ';') as notas\n" +
-"FROM notas as a inner join aluno as b on (a.aluno_idaluno = b.idaluno) group by nome  ;");
-           // stmt.setInt(1, id);
-            rs = stmt.executeQuery();// executando o select from 
-
-            while (rs.next()) {// while para adicionar o objeto aluno na arraylist do tipo aluno
-                Aluno us = new Aluno();
-                us.setNome(rs.getString("nome"));
-                us.turma.escola.setNome(rs.getNString("turma_Escola_nome"));
-                us.turma.setNome(rs.getNString("turma_nome"));
-                us.setNotas(rs.getString("notas"));
-                user.add(us);
-            }
-        } catch (SQLException ex) {
-            System.out.println("ERRO, não encontrado");
-        } finally {
-            Conection.ConectionFactory.CloseConnection(con, stmt, rs);// fechando conecção 
-        }
-        return user;
-    }       
-   
 
 
     public boolean delete(int id) {
